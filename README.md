@@ -1,5 +1,3 @@
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://choosealicense.com/licenses/mit/)
-![Project status: unstable](https://img.shields.io/badge/Project%20status-UNSTABLE-important)
 # MHS Updates
 
 Disclaimer: not all features are currently available. Please continue to check back for updates.
