@@ -1,0 +1,26 @@
+<html>
+<head>
+    <title>Login | MHS Updates</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="content">
+        <div class="login_info">
+            <h1>Welcome back!</h1>
+            <h4>Need an account? <a href="https://forms.gle/YG81mH9r8Y5p6KiB9">Click here</a> to sign up.</h4>
+            <p>You must be logged into your Mayfield-provided Google account to fill out the form.</p>
+            <p>Your account will be activated within a few minutes.</p>
+        </div>
+        <div class="login_credentials">
+            <form action="/api/v1/Login" method="post">
+                <input name="email" type="text" placeholder="School email address">
+                <input name="password" type="password" placeholder="Password">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

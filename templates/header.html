@@ -1,0 +1,17 @@
+<div class="header-container">
+    <div class="header">
+        <div class="left">
+            <div class="brand" onclick="window.location.href = '/'">
+                <img src="/static/img/logo.png"></img>
+                <h1>MHS Updates</h1>
+            </div>
+        </div>
+        <div class="right">
+            {% if session.get('logged_in') %}
+            <h3>Hello, {{ STUDENT_CONTACTS[session['email']] }}!</h3>
+            {% else %}
+            <a href='/auth'><h3>Login or Sign Up</h3></a>
+            {% endif %}
+        </div>
+    </div>
+</div>

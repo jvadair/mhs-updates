@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta&display=swap');
+
+body {
+    font-family: 'Mukta', sans-serif;
+    background: rgb(2,161,68);
+    height: 100%;
+    background: radial-gradient(circle, rgba(2,161,68,1) 0%, rgba(6,7,14,1) 100%); 
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+}
+
+.header-container {
+    display: flex;
+    width: 100%;
+    height: min-content;
+/*     margin: 15px; */
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    margin: 15px;
+}
+
+.header img {
+    height: 50px;
+    width: auto;
+}
+
+.header .left {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    grid-gap: 25px;
+}
+
+.header .left .brand {
+    display: flex;
+    grid-gap: 25px;
+    align-items: center;
+}
+
+.header .left .brand:hover {
+    cursor: pointer;
+}
+
+.header .left h1 {
+    color: white;
+}
+
+.header .right {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    grid-gap: 25px;
+    color: white;
+    align-items: center;
+    justify-content: right;
+}
+
+.header .right a {
+    color: white;
+}
+
+.footer {
+    text-align: center;
+}

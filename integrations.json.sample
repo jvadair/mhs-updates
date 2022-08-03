@@ -1,0 +1,19 @@
+{
+  "inputs": {
+    "rss": {
+      "website": {
+        "url": "https://www.mayfieldschools.org/RSS/News/28460262383202.rss",
+        "title": "Mayfield City Schools Website Posts"
+      }
+    },
+    "twitter": {
+      "legan": {
+        "username": "WildcatMHS",
+        "title": "Mr. Legan's Twitter Feed"
+      }
+    }
+  },
+  "outputs": {
+    "discord": {}
+  }
+}

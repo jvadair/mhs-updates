@@ -1,0 +1,41 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 25px;
+  padding-top: 25px;
+  align-items: center;
+  justify-content: center;
+  height: 100%
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(10, 10, 10, 0.6);
+  color: white;
+  width: 75%;
+  height: 75%;
+  align-items: center;
+  justify-content: center;
+}
+
+.post .meta {
+  display: flex;
+  grid-gap: 15px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.post .meta img {
+  width: 40px;
+  height: auto;
+  border-radius: 100%;
+}
+
+.post .message {
+  text-align: center;
+  max-height: 75px;
+  overflow: hidden;
+  max-width: 75vw;
+}

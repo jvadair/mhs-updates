@@ -1,0 +1,23 @@
+<html>
+<head>
+    <title>MHS Updates</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="content">
+        <div class="post">
+            <div class="meta">
+                    <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png">
+                    <h4>{{ post['title'] }}</h4>
+                    <p>{{ post['datetime'].strftime('%B %d, %Y at %X') }}</p>
+            </div>
+            <div class="message">
+                <p>{{ post['content'] }}</p>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>

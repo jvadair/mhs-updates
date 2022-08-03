@@ -1,0 +1,39 @@
+.content {
+    display: flex;
+    height: 100%;
+    margin: 0px;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.login_info {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+  
+.login_credentials {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+  
+.login_credentials form {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 15px;
+    width: 75%;
+}
+  
+.login_credentials form input {
+    width: 100%;
+    text-align: center;
+}

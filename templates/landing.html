@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>MHS Updates</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="content">
+        {% if session['logged_in'] %}
+        {% set posts = list(posts.val.values()) %}
+        <!--Shows the latest 50 posts only-->
+        {% for post in posts[:51] %}
+        {% set post_id = post["id"] %}
+        <div class="post" onclick="window.location.href = '/post/{{ post_id }}/'">
+            <div class="meta">
+                    <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png">
+                    <h4>{{ post['title'] }}</h4>
+                    <p>{{ post['datetime'].strftime('%b %d, %Y') }}</p>
+            </div>
+            <div class="message">
+                <p>{{ post['content'] }}</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h1>Coming soon...</h1>
+        {% endif %}
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>
