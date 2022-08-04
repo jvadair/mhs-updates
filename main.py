@@ -209,9 +209,12 @@ class API:
     def handle_new_users(self, data):
         for item in data:
             if not path.exists('db/users/' + item[1]):
-                userdb = PYNDatabase('db/users/' + item[1], password=item[2])  # The user data is encrypted with their password
-                userdb.create('preferences')
-                userdb.save()
+                if config.has('allowed_domains') and item[1].split('@')[1] not in config.allowed_domains.val:
+                    pass
+                else:
+                    userdb = PYNDatabase('db/users/' + item[1], password=item[2])  # The user data is encrypted with their password
+                    userdb.create('preferences')
+                    userdb.save()
 
     # --- API routes
 
