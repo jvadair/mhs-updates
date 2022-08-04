@@ -6,4 +6,6 @@ static/img/logos/
 *.back
 *.back.*
 *.pyndb
-/db/*
+/db/*.pyndb
+/db/back/
+/db/users/*

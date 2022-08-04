@@ -2,7 +2,7 @@
 from flask import Flask, request, session, redirect
 from flask import render_template as rt_default
 from pyndb import PYNDatabase
-from os import urandom
+from os import urandom, path
 from time import sleep, mktime
 from datetime import datetime
 import feedparser, requests, json
@@ -140,7 +140,6 @@ PORT = 12345
 
 # Object inits
 default_integrations = PYNDatabase('integrations.json')
-users = PYNDatabase('db/users.pyndb', autosave=True)
 posts = PYNDatabase('db/posts.pyndb', autosave=True)
 config = PYNDatabase('config.json', autosave=True)
 latest_posts = PYNDatabase('db/latest.pyndb', autosave=True)
@@ -207,10 +206,10 @@ class API:
 
     def handle_new_users(self, data):
         for item in data:
-            if not users.has(item[1]):
-                users.create(item[1])
-                users.get(item[1]).set('password', item[2])
-                users.get(item[1]).create('preferences')
+            if not path.exists('db/users/' + item[1]):
+                userdb = PYNDatabase('db/users/' + item[1], password=item[2])  # The user data is encrypted with their password
+                userdb.create('preferences')
+                userdb.save()
 
     # --- API routes
 
@@ -235,12 +234,13 @@ class API:
         data = dict(request.form)
         if not check_for_keys(data, 'email', 'password'):
             return 'Invalid response', 400  # Bad request
-        if users.has(data['email']):
-            if users.get(data['email']).password.val == data['password']:
+        if path.exists('db/users/' + data['email']):
+            try:
+                userdb = PYNDatabase('db/users/' + data['email'], password=data['password'])
                 session['logged_in'] = True
                 session['email'] = data['email']
                 return redirect('/')
-            else:
+            except PYNDatabase.Universal.Error.InvalidPassword:
                 return errorpage('Invalid password.')
         else:
             return errorpage('User not found.')
