@@ -184,6 +184,8 @@ VALID_ROUTES = (
     "Tea",
     "Login",
     "Logout",
+    "SetPreferences",
+    "ChangePassword"
 )
 
 class InvalidRoute(Exception):
@@ -239,6 +241,7 @@ class API:
                 userdb = PYNDatabase('db/users/' + data['email'], password=data['password'])
                 session['logged_in'] = True
                 session['email'] = data['email']
+                session['password'] = data['password']  # So that the user doesn't have to re-enter their password, but their data can remain encrypted.
                 return redirect('/')
             except PYNDatabase.Universal.Error.InvalidPassword:
                 return errorpage('Invalid password.')
@@ -248,14 +251,39 @@ class API:
     def Logout(self, request, *args):
         if session.get('logged_in'):
             session['logged_in'] = False
+            del session['email']
+            del session['password']
             return redirect('/')
         else:
             return errorpage('You are not logged in.'), 401
     
     def SetPreferences(self, request, *args):
         if session.get('email'):
-            pass
+            userdb = PYNDatabase('db/users/' + session.get('email'), password=session.get('password'))
+            data = dict(request.form)
+            print(data)
+            for pref in data.keys():
+                userdb.preferences.set(pref, data[pref])
+                return redirect('/account')
+        else:
+            return errorpage('You are not logged in.'), 401
 
+    def ChangePassword(self, request, *args):
+        if session.get('email'):
+            try:
+                data = dict(request.form)
+                userdb = PYNDatabase('db/users/' + session.get('email'), password=data.get('old_password'))
+                if data.get('new_password'):
+                    userdb.password = data['new_password']
+                    session['password'] = data['new_password']
+                    userdb.save()
+                    return redirect('/account')
+                else:
+                    return errorpage('You must enter a password.'), 400
+            except PYNDatabase.Universal.Error.InvalidPassword:
+                return errorpage('Invalid password.'), 401
+        else:
+            return errorpage('You are not logged in.'), 401
 
 # Loads the API object
 api = API()

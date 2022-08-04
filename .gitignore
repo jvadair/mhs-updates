@@ -8,4 +8,4 @@ static/img/logos/
 *.pyndb
 /db/*.pyndb
 /db/back/
-/db/users/*
+/db/users/*@*
