@@ -140,10 +140,10 @@ PORT = 12345
 
 # Object inits
 default_integrations = PYNDatabase('integrations.json')
-users = PYNDatabase('users.pyndb', autosave=True)
-posts = PYNDatabase('posts.pyndb', autosave=True)
+users = PYNDatabase('db/users.pyndb', autosave=True)
+posts = PYNDatabase('db/posts.pyndb', autosave=True)
 config = PYNDatabase('config.json', autosave=True)
-latest_posts = PYNDatabase('latest.pyndb', autosave=True)
+latest_posts = PYNDatabase('db/latest.pyndb', autosave=True)
 app = Flask(__name__)
 with open('contacts.csv', mode='r') as inp:
     reader = csv.reader(inp)
@@ -251,6 +251,10 @@ class API:
             return redirect('/')
         else:
             return errorpage('You are not logged in.'), 401
+    
+    def SetPreferences(self, request, *args):
+        if session.get('email'):
+            pass
 
 
 # Loads the API object

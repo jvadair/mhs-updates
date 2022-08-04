@@ -6,7 +6,7 @@ Getting the latest information from Mayfield City Schools can be a real pain som
 
 ## Self-hosting
 
-To start, edit all of the .sample files and remove that ending. Then you will need to set up an N8N instance and import the n8n_sample_profile.json file and modify it. Set up a Google Form which exports to a Google Sheet, and use that same Google account to access the Google Sheets API. Then you can connect it with N8N. This system is in place to ensure that people who sign up are a part of Mayfield City Schools and also to allow account management through this service independent of Google once users have completed the initial sign-up process.
+To start, copy all of the sample files to the root directory and modify them. Then you will need to set up an N8N instance and import the n8n_sample_profile.json file and modify it. Set up a Google Form which exports to a Google Sheet, and use that same Google account to access the Google Sheets API. Then you can connect it with N8N. This system is in place to ensure that people who sign up are a part of Mayfield City Schools and also to allow account management through this service independent of Google once users have completed the initial sign-up process.
 
 ## API Reference
 
