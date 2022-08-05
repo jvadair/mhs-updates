@@ -15,6 +15,9 @@
             </div>
             <div class="message">
                 <p>{{ post['content'] }}</p>
+            {% if post['link'] %}
+            <a href="{{ post['link'] }}">View original message</a>
+            {% endif %}
             </div>
         </div>
     </div>
