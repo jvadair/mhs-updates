@@ -1,20 +1,24 @@
 <html>
 <head>
-    <title>MHS Updates</title>
+    <title>{{ post['title'] }} | MHS Updates</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/post.css') }}">
 </head>
 <body>
     {% include 'header.html' %}
+    {% set source_split = post['source'].split('.') %}
     <div class="content">
         <div class="post">
             <div class="meta">
-                    <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png">
+                    <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png" title="{{ integrations.inputs.get(source_split[0]).get(source_split[1]).title.val }}">
                     <h4>{{ post['title'] }}</h4>
                     <p>{{ post['datetime'].strftime('%B %d, %Y at %X') }}</p>
             </div>
             <div class="message">
                 <p>{{ post['content'] }}</p>
+            {% if post['link'] %}
+            <a href="{{ post['link'] }}">View original message</a>
+            {% endif %}
             </div>
         </div>
     </div>

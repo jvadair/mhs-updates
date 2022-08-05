@@ -37,3 +37,7 @@
   text-align: center;
   max-width: 75vw;
 }
+
+.post .message a {
+  color: rgb(150,255,150)
+}

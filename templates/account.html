@@ -15,6 +15,9 @@
         <div class="main">
             <div class="name">
                     <h2>{{ STUDENT_CONTACTS[session['email']] }}</h2>
+                    <form class="logout" action="/api/v1/Logout" method="post">
+                        <input type="submit" class="btn logout-btn" value="Sign out">
+                    </form>
             </div>
             <div class="etc">
                 <form action="/api/v1/SetPreferences" class="preferences" method="post">
