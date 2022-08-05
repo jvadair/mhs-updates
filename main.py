@@ -267,7 +267,7 @@ class API:
             print(data)
             for pref in data.keys():
                 userdb.preferences.set(pref, data[pref])
-                return redirect('/account')
+                return redirect('/account?success=true')
         else:
             return errorpage('You are not logged in.'), 401
 
@@ -280,7 +280,7 @@ class API:
                     userdb.password = data['new_password']
                     session['password'] = data['new_password']
                     userdb.save()
-                    return redirect('/account')
+                    return redirect('/account?success=true')
                 else:
                     return errorpage('You must enter a password.'), 400
             except PYNDatabase.Universal.Error.InvalidPassword:
@@ -315,6 +315,12 @@ def send_post(post_id):
 def auth():
     return render_template('auth.html')
 
+@app.route('/account')
+def account_management_ui():
+    if request.args.get('success'):
+        return render_template('account.html', success=True)
+    return render_template('account.html', success=False)
+
 @app.route('/signup')
 @app.route('/login')
 @app.route('/register')
@@ -323,9 +329,9 @@ def auth_aliases():
     return redirect('/auth')
 
 # Test routes
-@app.route('/template/<template_name>')
-def send_template(template_name):
-    return render_template(template_name)
+# @app.route('/template/<template_name>')
+# def send_template(template_name):
+#     return render_template(template_name)
 
 
 # Run

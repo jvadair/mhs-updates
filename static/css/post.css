@@ -14,7 +14,7 @@
   background-color: rgba(10, 10, 10, 0.6);
   color: white;
   width: 75%;
-  height: 75%;
+  min-height: 75%;
   align-items: center;
   justify-content: center;
 }
@@ -35,7 +35,5 @@
 
 .post .message {
   text-align: center;
-  max-height: 75px;
-  overflow: hidden;
   max-width: 75vw;
 }
