@@ -312,7 +312,7 @@ api = API()
 # Flask routes
 @app.before_request
 def check_permissions():
-    if request.path not in ('/', '/auth', '/favicon.ico') and not session.get('logged_in'):
+    if request.path not in ('/', '/auth', '/oss', '/favicon.ico') and not session.get('logged_in'):
         if not request.path.startswith('/api') and not request.path.startswith('/static'):
             return redirect('/')
 
@@ -357,6 +357,10 @@ def account_management_ui():
     if request.args.get('success'):
         return render_template('account.html', success=True)
     return render_template('account.html', success=False)
+
+@app.route('/oss')
+def oss_info():
+    return render_template('oss.html')
 
 @app.route('/signup')
 @app.route('/login')

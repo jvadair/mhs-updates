@@ -25,7 +25,14 @@
         </div>
         {% endfor %}
         {% else %}
-        <h1>Coming soon...</h1>
+        <div class="info">
+            <h1>MHS Updates</h1>
+            <h2>A student-maintained platform for getting the latest MHS news.</h2>
+            <a href="/auth" class="gs-btn">Get started</a>
+            <div class="oss">
+                <h3>MHS Updates is free and open source. Learn more <a href="/oss">here.</a></h3>
+            </div>
+        </div>
         {% endif %}
     </div>
     {% include 'footer.html' %}
