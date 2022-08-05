@@ -24,6 +24,19 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  width: 100%;
+}
+
+.main .logout {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main .logout-btn {
+  margin-top: 15px;
 }
 
 .main .etc {
@@ -31,7 +44,7 @@
   min-width: 75vw;
 }
 
-form {
+.preferences{
   background-color: rgba(25,25,25,0.3);
   width: 100%;
 }
@@ -47,9 +60,10 @@ form .btn {
 
 form .btn:hover {
   background-color: rgb(50,50,50);
+  cursor: pointer;
 }
 
-form .warning:hover {
+form .warning:hover, form .logout-btn:hover {
   background-color: rgb(200,50,50);
 }
 

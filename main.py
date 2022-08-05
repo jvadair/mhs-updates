@@ -5,13 +5,16 @@ from pyndb import PYNDatabase
 from os import urandom, path
 from time import sleep, mktime
 from datetime import datetime
-import feedparser, requests, json
+import feedparser
+import requests
+import json
 import fetchtwitter
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
 import re
 import csv
-from misc import check_for_keys, errorpage, fix_html
+import logging
+from misc import check_for_keys, errorpage, fix_html, Log
 from uuid import uuid4
 
 # Ensures certain variables are always passed to render_template
@@ -134,6 +137,14 @@ def alert(name, post):
     # Does nothing atm
     print(post['title'])
 
+def log_by_status(message, response):
+    if response.status.startswith('2') or response.status.startswith('3'):
+        log.info(message)
+    elif response.status.startswith('4'):
+        log.info(message, color=log.colors['yellow'])
+    elif response.status.startswith('5'):
+        log.error(message)
+
 
 # Constants
 PORT = 12345
@@ -156,6 +167,12 @@ with open('contacts.csv', mode='r') as inp:
 print('Hang tight, grabbing posts really quick...')
 autograb()
 print('Done!')
+
+# Disable default logger
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+# Enable custom logger
+log = Log()
 
 # Start background tasks
 scheduler = BackgroundScheduler()
@@ -295,21 +312,41 @@ api = API()
 # Flask routes
 @app.before_request
 def check_permissions():
-    if request.path not in ('/', '/auth') and not session.get('logged_in'):
+    if request.path not in ('/', '/auth', '/favicon.ico') and not session.get('logged_in'):
         if not request.path.startswith('/api') and not request.path.startswith('/static'):
             return redirect('/')
+
+@app.after_request  # Logging
+def check_result(response):
+    if request.full_path.startswith('/api'):
+        path = request.path.split('/')[1:]
+        api_ver = path[1]
+        route = path[2]
+        message = f'{request.remote_addr}: -- API ({api_ver}) -- {request.method} @ {route} ({response.status})'
+        if route == 'SetCredentials':
+            log.debug(message)
+        else:
+            log_by_status(message, response)
+    else:
+        message = f'{request.remote_addr}: {request.method} {request.path} ({response.status})'
+        log_by_status(message, response)
+    return response
 
 @app.route('/api/v1/<route>', methods=['POST'])
 def call_api(route):
     return api.handle(route, request)
 
+@app.route('/favicon.ico')
+def send_favicon():
+    return redirect('/static/img/favicon.ico')
+
 @app.route('/')
 def index():
-    return render_template('landing.html', posts=posts)
+    return render_template('landing.html', posts=posts, integrations=default_integrations)
 
 @app.route('/post/<post_id>/')
 def send_post(post_id):
-    return render_template('post.html', post=posts.get(post_id).val)
+    return render_template('post.html', post=posts.get(post_id).val, integrations=default_integrations)
 
 @app.route('/auth')
 def auth():
