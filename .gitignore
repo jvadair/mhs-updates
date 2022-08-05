@@ -1,8 +1,11 @@
 __pycache__/
 static/img/logos/
-contacts.csv
-integrations.json
-config.json
+/contacts.csv
+/integrations.json
+/config.json
 *.back
 *.back.*
 *.pyndb
+/db/*.pyndb
+/db/back/
+/db/users/*@*

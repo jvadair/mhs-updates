@@ -1,0 +1,68 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  grid-gap: 25px;
+  padding-top: 25px;
+  align-items: center;
+  justify-content: center;
+  height: 100%
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(10, 10, 10, 0.6);
+  color: white;
+  width: 75%;
+  align-items: center;
+  justify-content: center;
+}
+
+.main .name {
+  display: flex;
+  grid-gap: 15px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.main .etc {
+  text-align: center;
+  min-width: 75vw;
+}
+
+form {
+  background-color: rgba(25,25,25,0.3);
+  width: 100%;
+}
+
+form .btn {
+  border: 1px solid white;
+  background-color: rgb(25,25,25);
+  color: white;
+  padding: 5px;
+  border-radius: 25px;
+  transition-duration: .1s;
+}
+
+form .btn:hover {
+  background-color: rgb(50,50,50);
+}
+
+form .warning:hover {
+  background-color: rgb(200,50,50);
+}
+
+.theme {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-gap: 10px;
+}
+
+.success_bar {
+  background-color: lime;
+  width: 100%;
+  text-align: center;
+  font-size: 75%;
+}

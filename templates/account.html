@@ -1,0 +1,41 @@
+<html>
+<head>
+    <title>My account | MHS Updates</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="content">
+        {% if success %}
+        <div class="success_bar">
+            <h2>Preferences updated successfully!</h2>
+        </div>
+        {% endif %}
+        <div class="main">
+            <div class="name">
+                    <h2>{{ STUDENT_CONTACTS[session['email']] }}</h2>
+            </div>
+            <div class="etc">
+                <form action="/api/v1/SetPreferences" class="preferences" method="post">
+                    <div class="theme">
+                        <p>Theme</p>
+                        <select name="theme">
+                            <option value="light">Light</option>
+                            <option value="dark">Dark</option>
+                        </select>
+                    </div>
+                    <input type="submit" class="btn" value="Update preferences">
+                </form>
+                <h4>Change Password</h4>
+                <form action="/api/v1/ChangePassword" class="password" method="post">
+                    <input type="password" class="text" name="old_password" placeholder="Old password">
+                    <input type="password" class="text" name="new_password" placeholder="New password">
+                    <input type="submit" class="btn warning" value="Change password">
+                </form>
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>
