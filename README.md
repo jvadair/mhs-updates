@@ -60,6 +60,27 @@ Also see n8n_sample_profile.json
 | `email`      | `string` | **Required**. User's email        |
 | `password`   | `string` | **Required**. User's password     |
 
+#### SetPreferences
+
+```http
+  POST /api/v1/SetPreferences
+```
+
+| Parameter    | Type     | Description                                                                              |
+| :----------- | :------- | :--------------------------------------------------------------------------------------- |
+| `*`          | `string` | **Required**. Preference to set.  (Can set multiple by sending multiple parameters)      |
+
+#### ChangePassword
+
+```http
+  POST /api/v1/Login
+```
+
+| Parameter           | Type     | Description                        |
+| :------------------ | :------- | :--------------------------------- |
+| `old_password`      | `string` | **Required**. The old password     |
+| `new_password`      | `string` | **Required**. The new password     |
+
 #### Logout
 
 ```http
