@@ -295,7 +295,7 @@ api = API()
 # Flask routes
 @app.before_request
 def check_permissions():
-    if request.path not in ('/', '/auth') and not session.get('logged_in'):
+    if request.path not in ('/', '/auth', '/favicon.ico') and not session.get('logged_in'):
         if not request.path.startswith('/api') and not request.path.startswith('/static'):
             return redirect('/')
 
@@ -303,13 +303,17 @@ def check_permissions():
 def call_api(route):
     return api.handle(route, request)
 
+@app.route('/favicon.ico')
+def send_favicon():
+    return redirect('/static/img/favicon.ico')
+
 @app.route('/')
 def index():
-    return render_template('landing.html', posts=posts)
+    return render_template('landing.html', posts=posts, integrations=default_integrations)
 
 @app.route('/post/<post_id>/')
 def send_post(post_id):
-    return render_template('post.html', post=posts.get(post_id).val)
+    return render_template('post.html', post=posts.get(post_id).val, integrations=default_integrations)
 
 @app.route('/auth')
 def auth():

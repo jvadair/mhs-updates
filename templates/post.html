@@ -6,10 +6,11 @@
 </head>
 <body>
     {% include 'header.html' %}
+    {% set source_split = post['source'].split('.') %}
     <div class="content">
         <div class="post">
             <div class="meta">
-                    <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png">
+                    <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png" title="{{ integrations.inputs.get(source_split[0]).get(source_split[1]).title.val }}">
                     <h4>{{ post['title'] }}</h4>
                     <p>{{ post['datetime'].strftime('%B %d, %Y at %X') }}</p>
             </div>
