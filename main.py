@@ -3,11 +3,9 @@ from flask import Flask, request, session, redirect, abort
 from flask import render_template as rt_default
 from pyndb import PYNDatabase
 from os import urandom, path
-from time import sleep, mktime
+from time import mktime
 from datetime import datetime
 import feedparser
-import requests
-import json
 import fetchtwitter
 from apscheduler.schedulers.background import BackgroundScheduler
 import atexit
@@ -24,7 +22,7 @@ def render_template(*args, **kwargs):
 # Autochecking functions
 def check_for_rss_updates(name, mark_as_read=True):
     info = default_integrations.inputs.rss.get(name)
-	# check if new version exists
+    # check if new version exists
     feed = feedparser.parse(info.url.val)
     if not latest_posts.has(name):  # For first-time runs
         if mark_as_read == True:
@@ -47,7 +45,7 @@ def check_for_rss_updates(name, mark_as_read=True):
 
 def check_for_twitter_updates(name, mark_as_read=True):  # func will 'catch-up' to missed posts over time...
     info = default_integrations.inputs.twitter.get(name)
-	# check if new version exists
+    # check if new version exists
     timeline = fetchtwitter.user(info.username.val)
     if not latest_posts.has(name):  # For first-time runs
         if mark_as_read == True:
