@@ -9,3 +9,4 @@ static/img/logos/
 /db/*.pyndb
 /db/back/
 /db/users/*@*
+/twint/
