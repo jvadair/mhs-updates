@@ -1,5 +1,5 @@
 # Module imports
-from flask import Flask, request, session, redirect
+from flask import Flask, request, session, redirect, abort
 from flask import render_template as rt_default
 from pyndb import PYNDatabase
 from os import urandom, path
@@ -196,14 +196,14 @@ scheduler.start()
 API_KEY = config.api_key.val
 
 
-VALID_ROUTES = (
-    "SetCredentials",
-    "Tea",
-    "Login",
-    "Logout",
-    "SetPreferences",
-    "ChangePassword"
-)
+VALID_ROUTES = {
+    "SetCredentials": ('POST'),
+    "Tea": ('POST'),
+    "Login": ('POST'),
+    "Logout": ('POST'),
+    "SetPreferences": ('POST'),
+    "ChangePassword": ('POST'),
+}
 
 class InvalidRoute(Exception):
     pass
@@ -218,7 +218,12 @@ class API:
     def handle(self, route, request, *args):
         # print(VALID_ROUTES, route)
         if route in VALID_ROUTES:  # Prevents potential abuse of certain non-route functions
-            return getattr(self, route)(request, *args)  # Forwards response back to Flask
+            if request.method in VALID_ROUTES[route]:
+                return getattr(self, route)(request, *args)  # Forwards response back to Flask
+            else:
+                message = f'{request.remote_addr}: -- API ({request.path.split("/")[2]}) -- {request.method} @ {route} (405 METHOD NOT ALLOWED)'
+                log.info(message, color=log.colors['yellow'])
+                abort(405)
         else:
             # raise InvalidRoute('The requested API path doesn\'t exist.')
             return 'The requested API path doesn\'t exist.', 404
@@ -332,7 +337,7 @@ def check_result(response):
         log_by_status(message, response)
     return response
 
-@app.route('/api/v1/<route>', methods=['POST'])
+@app.route('/api/v1/<route>', methods=['POST', 'GET'])
 def call_api(route):
     return api.handle(route, request)
 
