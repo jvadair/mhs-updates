@@ -10,3 +10,4 @@ static/img/logos/
 /db/back/
 /db/users/*@*
 /twint/
+/.idea/
