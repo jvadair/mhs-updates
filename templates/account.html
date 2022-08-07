@@ -28,6 +28,20 @@
                             <option value="dark">Dark</option>
                         </select>
                     </div>
+                    <div class="integration-selection">
+                        <h3>Integrations</h3>
+                        <div class="checkmarks">
+                            {% for integration_type in integrations.inputs.values() %}
+                            {% for integration in integrations.inputs.get(integration_type).values() %}
+                            <div class="check">
+                                <p>{{ integrations.inputs.get(integration_type).get(integration).title.val }}</p>
+                                <input name="integration.{{ integration_type}}.{{ integration }}" type="checkbox" value="1" checked>
+                                <input name='integration.{{ integration_type}}.{{ integration }}' type='hidden' value='0'> <!--Ensures some value is submitted. If both are, flask takes the furthest value.-->
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
                     <input type="submit" class="btn" value="Update preferences">
                 </form>
                 <h4>Change Password</h4>

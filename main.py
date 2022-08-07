@@ -17,7 +17,7 @@ from uuid import uuid4
 
 # Ensures certain variables are always passed to render_template
 def render_template(*args, **kwargs):
-    return rt_default(*args, STUDENT_CONTACTS=STUDENT_CONTACTS, session=session, len=len, list=list, **kwargs)
+    return rt_default(*args, STUDENT_CONTACTS=STUDENT_CONTACTS, session=session, len=len, list=list, integrations=default_integrations, **kwargs)
 
 # Autochecking functions
 def check_for_rss_updates(name, mark_as_read=True):
@@ -203,6 +203,10 @@ VALID_ROUTES = {
     "ChangePassword": ('POST'),
 }
 
+VALID_PREFS = (
+    'theme',
+)
+
 class InvalidRoute(Exception):
     pass
 
@@ -235,6 +239,23 @@ class API:
                     userdb = PYNDatabase('db/users/' + item[1], password=item[2])  # The user data is encrypted with their password
                     userdb.create('preferences')
                     userdb.save()
+
+    def handle_prefs(self, data, userdb):
+        for pref in data.keys():
+            if pref.startswith('integration.'):
+                if not userdb.preferences.has('integrations'):
+                    userdb.preferences.create('integrations')
+                try:
+                    result = int(data[pref])
+                    if result not in (0,1):
+                        abort(400)  # Tamper prevention
+                except ValueError:  # ^
+                    abort(400)
+                userdb.preferences.integrations.set(pref.split('.', maxsplit=1)[1], result)
+            elif pref in VALID_PREFS:
+                userdb.preferences.set(pref, data[pref])
+            else:  # Tamper prevention
+                abort(400)
 
     # --- API routes
 
@@ -285,9 +306,9 @@ class API:
             userdb = PYNDatabase('db/users/' + session.get('email'), password=session.get('password'))
             data = dict(request.form)
             print(data)
-            for pref in data.keys():
-                userdb.preferences.set(pref, data[pref])
-                return redirect('/account?success=true')
+            self.handle_prefs(data, userdb)
+            userdb.save()
+            return redirect('/account?success=true')
         else:
             return errorpage('You are not logged in.'), 401
 
@@ -345,11 +366,15 @@ def send_favicon():
 
 @app.route('/')
 def index():
-    return render_template('landing.html', posts=posts, integrations=default_integrations)
+    if session.get('logged_in'):
+        userdb = PYNDatabase('db/users/' + session.get('email'), password=session.get('password'))
+        return render_template('landing.html', posts=posts, prefs=userdb.preferences)
+    else:
+        return render_template('landing.html')
 
 @app.route('/post/<post_id>/')
 def send_post(post_id):
-    return render_template('post.html', post=posts.get(post_id).val, integrations=default_integrations)
+    return render_template('post.html', post=posts.get(post_id).val)
 
 @app.route('/auth')
 def auth():

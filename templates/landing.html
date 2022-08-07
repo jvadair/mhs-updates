@@ -13,6 +13,7 @@
         {% for post in posts[:51] %}
         {% set post_id = post["id"] %}
         {% set source_split = post['source'].split('.') %}
+        {% if prefs.integrations.get(post['source']).val %}
         <div class="post" onclick="window.location.href = '/post/{{ post_id }}/'">
             <div class="meta">
                     <img src="/static/img/logos/{{ post['source'].replace('.', '/') }}.png" title="{{ integrations.inputs.get(source_split[0]).get(source_split[1]).title.val }}">
@@ -23,6 +24,7 @@
                 <p>{{ post['content'] }}</p>
             </div>
         </div>
+        {% endif %}
         {% endfor %}
         {% else %}
         <div class="info">

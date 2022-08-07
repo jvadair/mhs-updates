@@ -80,3 +80,16 @@ form .warning:hover, form .logout-btn:hover {
   text-align: center;
   font-size: 75%;
 }
+
+.checkmarks {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.check {
+  display: flex;
+  grid-gap: 5px;
+}
