@@ -194,7 +194,14 @@ scheduler.start()
 API_KEY = config.api_key.val
 
 
-VALID_ROUTES = {
+class InvalidRoute(Exception):
+    pass
+
+class API:
+
+    # --- Security measures
+
+    VALID_ROUTES = {
     "SetCredentials": ('POST'),
     "Tea": ('POST'),
     "Login": ('POST'),
@@ -203,14 +210,9 @@ VALID_ROUTES = {
     "ChangePassword": ('POST'),
 }
 
-VALID_PREFS = (
-    'theme',
-)
-
-class InvalidRoute(Exception):
-    pass
-
-class API:
+    VALID_PREFS = (
+        'theme',
+    )
 
     # --- Helper functions
 
@@ -218,9 +220,8 @@ class API:
         pass
 
     def handle(self, route, request, *args):
-        # print(VALID_ROUTES, route)
-        if route in VALID_ROUTES:  # Prevents potential abuse of certain non-route functions
-            if request.method in VALID_ROUTES[route]:
+        if route in self.VALID_ROUTES:  # Prevents potential abuse of certain non-route functions
+            if request.method in self.VALID_ROUTES[route]:
                 return getattr(self, route)(request, *args)  # Forwards response back to Flask
             else:
                 message = f'{request.remote_addr}: -- API ({request.path.split("/")[2]}) -- {request.method} @ {route} (405 METHOD NOT ALLOWED)'
@@ -252,7 +253,7 @@ class API:
                 except ValueError:  # ^
                     abort(400)
                 userdb.preferences.integrations.set(pref.split('.', maxsplit=1)[1], result)
-            elif pref in VALID_PREFS:
+            elif pref in self.VALID_PREFS:
                 userdb.preferences.set(pref, data[pref])
             else:  # Tamper prevention
                 abort(400)
@@ -279,7 +280,7 @@ class API:
     def Login(self, request, *args):
         data = dict(request.form)
         if not check_for_keys(data, 'email', 'password'):
-            return 'Invalid response', 400  # Bad request
+            return 'Inq response', 400  # Bad request
         if path.exists('db/users/' + data['email']):
             try:
                 userdb = PYNDatabase('db/users/' + data['email'], password=data['password'])
@@ -305,7 +306,6 @@ class API:
         if session.get('email'):
             userdb = PYNDatabase('db/users/' + session.get('email'), password=session.get('password'))
             data = dict(request.form)
-            print(data)
             self.handle_prefs(data, userdb)
             userdb.save()
             return redirect('/account?success=true')
